@@ -1,14 +1,14 @@
 package gabe.reduzLink.api.entities.user;
 
-import gabe.reduzLink.api.dtos.user.CreateUserDto;
+import gabe.reduzLink.api.dtos.user.*;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 
-
+@Entity
 @Table(name = "users")
-@Entity(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,10 +30,23 @@ public class User {
     @NotBlank(message = "A senha não pode estar em branco")
     private String password;
 
-    public User(CreateUserDto dto) {
+    private Boolean status;
+
+    public User( CreateUserDto dto) {
         this.name = dto.name();
         this.email = dto.email();
         this.password = dto.password();
     }
 
+    public void updateUser(@Valid UpdateUserDto json) {
+        if (json.name() != null) {
+            this.name = json.name();
+        }
+        if (json.email() != null) {
+            this.email = json.email();
+        }
+        if (json.password() != null) {
+            this.password = json.password();
+        }
+    }
 }
